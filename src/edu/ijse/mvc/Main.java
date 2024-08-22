@@ -4,6 +4,8 @@
  */
 package edu.ijse.mvc;
 
+import edu.ijse.mvc.db.DBConnection;
+
 /**
  *
  * @author anjan
@@ -13,8 +15,7 @@ public class Main {
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) {
-        System.out.println("Working");
+    public static void main(String[] args) throws Exception{
+        DBConnection.getInstance().getConnection();
     }
-    
 }
