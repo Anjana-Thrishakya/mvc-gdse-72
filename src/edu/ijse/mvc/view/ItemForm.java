@@ -4,6 +4,9 @@
  */
 package edu.ijse.mvc.view;
 
+import edu.ijse.mvc.controller.ItemController;
+import edu.ijse.mvc.dto.ItemDto;
+import java.util.ArrayList;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -11,11 +14,14 @@ import javax.swing.table.DefaultTableModel;
  * @author anjan
  */
 public class ItemForm extends javax.swing.JFrame {
+    
+    private final ItemController ITEM_CONTROLLER;
 
     /**
      * Creates new form ItemForm
      */
     public ItemForm() {
+        ITEM_CONTROLLER = new ItemController();
         initComponents();
         loadTable();
     }
@@ -205,5 +211,22 @@ public class ItemForm extends javax.swing.JFrame {
             } 
         };
         tblItem.setModel(dtm);
+        
+        try{
+            ArrayList<ItemDto> itemDtoList= ITEM_CONTROLLER.getAllItem();
+            for (ItemDto itemDto : itemDtoList) {
+                Object[] rowData = {itemDto.getCode(),
+                itemDto.getDescription(),
+                itemDto.getPack(),
+                itemDto.getUnitPrice(),
+                itemDto.getQoh()};
+                
+                dtm.addRow(rowData);
+            }
+        } catch (Exception e){
+            System.out.println("Exception");
+        }
+        
+        
     }
 }
