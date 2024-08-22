@@ -7,6 +7,7 @@ package edu.ijse.mvc.view;
 import edu.ijse.mvc.controller.ItemController;
 import edu.ijse.mvc.dto.ItemDto;
 import java.util.ArrayList;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -86,6 +87,11 @@ public class ItemForm extends javax.swing.JFrame {
 
         btnSave.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         btnSave.setText("Save");
+        btnSave.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSaveActionPerformed(evt);
+            }
+        });
 
         btnUpdate.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         btnUpdate.setText("Update");
@@ -181,6 +187,10 @@ public class ItemForm extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
+        saveItem();
+    }//GEN-LAST:event_btnSaveActionPerformed
+
     
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -224,9 +234,27 @@ public class ItemForm extends javax.swing.JFrame {
                 dtm.addRow(rowData);
             }
         } catch (Exception e){
-            System.out.println("Exception");
+            JOptionPane.showMessageDialog(this, e.getMessage());
         }
         
+        
+    }
+    
+    private void saveItem(){
+        ItemDto itemDto = new ItemDto(
+                txtId.getText(),
+                txtDesc.getText(),
+                txtPack.getText(),
+                Double.parseDouble(txtUnitPrice.getText()),
+                Integer.parseInt(txtQoh.getText())
+        );
+        
+        try {
+            String resp = ITEM_CONTROLLER.saveItem(itemDto);
+            JOptionPane.showMessageDialog(this, resp);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, e.getMessage());
+        }
         
     }
 }
