@@ -5,6 +5,7 @@
 package edu.ijse.mvc;
 
 import edu.ijse.mvc.db.DBConnection;
+import edu.ijse.mvc.view.ItemForm;
 
 /**
  *
@@ -16,6 +17,6 @@ public class Main {
      * @param args the command line arguments
      */
     public static void main(String[] args) throws Exception{
-        DBConnection.getInstance().getConnection();
+        new ItemForm().setVisible(true);
     }
 }
