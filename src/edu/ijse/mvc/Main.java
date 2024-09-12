@@ -4,8 +4,8 @@
  */
 package edu.ijse.mvc;
 
-import edu.ijse.mvc.db.DBConnection;
 import edu.ijse.mvc.view.ItemForm;
+import edu.ijse.mvc.view.LayoutFrame;
 
 /**
  *
@@ -17,6 +17,6 @@ public class Main {
      * @param args the command line arguments
      */
     public static void main(String[] args) throws Exception{
-        new ItemForm().setVisible(true);
+        new LayoutFrame().setVisible(true);
     }
 }

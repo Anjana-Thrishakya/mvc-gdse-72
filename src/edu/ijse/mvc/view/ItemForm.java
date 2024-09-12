@@ -110,6 +110,11 @@ public class ItemForm extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
+        tblItem.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblItemMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(tblItem);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -191,6 +196,10 @@ public class ItemForm extends javax.swing.JFrame {
         saveItem();
     }//GEN-LAST:event_btnSaveActionPerformed
 
+    private void tblItemMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblItemMouseClicked
+        searchItem();
+    }//GEN-LAST:event_tblItemMouseClicked
+
     
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -266,5 +275,10 @@ public class ItemForm extends javax.swing.JFrame {
         txtPack.setText("");
         txtQoh.setText("");
         txtUnitPrice.setText("");
+    }
+    
+    private void searchItem(){
+        String code = (String) tblItem.getValueAt(tblItem.getSelectedRow(), 0);
+        System.out.println(code);
     }
 }
