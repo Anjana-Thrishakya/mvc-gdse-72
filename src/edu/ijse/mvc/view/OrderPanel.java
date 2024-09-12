@@ -8,7 +8,10 @@ import edu.ijse.mvc.controller.CustomerController;
 import edu.ijse.mvc.controller.ItemController;
 import edu.ijse.mvc.dto.CustomerDto;
 import edu.ijse.mvc.dto.ItemDto;
+import edu.ijse.mvc.dto.OrderDetailDto;
+import java.util.ArrayList;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -18,11 +21,13 @@ public class OrderPanel extends javax.swing.JPanel {
     
     private CustomerController customerController = new CustomerController();
     private ItemController itemController = new ItemController();
+    private ArrayList<OrderDetailDto> orderDetailDtos = new ArrayList<>();
     /**
      * Creates new form OrderPanel
      */
     public OrderPanel() {
         initComponents();
+        initTable();
     }
 
     /**
@@ -51,7 +56,7 @@ public class OrderPanel extends javax.swing.JPanel {
         txtDiscount = new javax.swing.JTextField();
         btnAdd = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tblItem = new javax.swing.JTable();
         btnPlaceOrder = new javax.swing.JButton();
 
         lblTitle.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
@@ -100,8 +105,13 @@ public class OrderPanel extends javax.swing.JPanel {
 
         btnAdd.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         btnAdd.setText("Add");
+        btnAdd.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAddActionPerformed(evt);
+            }
+        });
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tblItem.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -112,7 +122,7 @@ public class OrderPanel extends javax.swing.JPanel {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(tblItem);
 
         btnPlaceOrder.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         btnPlaceOrder.setText("Place Order");
@@ -206,6 +216,10 @@ public class OrderPanel extends javax.swing.JPanel {
         searchItem();
     }//GEN-LAST:event_btnSearchItemActionPerformed
 
+    private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
+        addDataToTable();
+    }//GEN-LAST:event_btnAddActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAdd;
@@ -213,7 +227,6 @@ public class OrderPanel extends javax.swing.JPanel {
     private javax.swing.JButton btnSearch;
     private javax.swing.JButton btnSearchItem;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
     private javax.swing.JLabel lblCustData;
     private javax.swing.JLabel lblCustId;
     private javax.swing.JLabel lblDIscount;
@@ -222,32 +235,33 @@ public class OrderPanel extends javax.swing.JPanel {
     private javax.swing.JLabel lblOrderId;
     private javax.swing.JLabel lblQty;
     private javax.swing.JLabel lblTitle;
+    private javax.swing.JTable tblItem;
     private javax.swing.JTextField txtCustomer;
     private javax.swing.JTextField txtDiscount;
     private javax.swing.JTextField txtItemId;
     private javax.swing.JTextField txtOrderId;
     private javax.swing.JTextField txtQty;
     // End of variables declaration//GEN-END:variables
-    public void searchCustomer(){
+    public void searchCustomer() {
         String custId = txtCustomer.getText();
         try {
             CustomerDto dto = customerController.searchCustomer(custId);
-            if(dto != null){
+            if (dto != null) {
                 lblCustData.setText(dto.getTitle() + ". " + dto.getName());
             } else {
                 JOptionPane.showMessageDialog(this, "Customer Not Found");
             }
         } catch (Exception e) {
-                e.printStackTrace();
-                JOptionPane.showMessageDialog(this, e.getMessage());
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, e.getMessage());
         }
     }
     
-    private void searchItem(){
+    private void searchItem() {
         String itemCode = txtItemId.getText();
         try {
             ItemDto itemDto = itemController.searchItem(itemCode);
-            if(itemDto != null){
+            if (itemDto != null) {
                 lblItemData.setText(itemDto.getDescription() + " | " + itemDto.getPack() + " | " + itemDto.getUnitPrice() + " | " + itemDto.getQoh());
             } else {
                 JOptionPane.showMessageDialog(this, "Item Not Found");
@@ -256,5 +270,35 @@ public class OrderPanel extends javax.swing.JPanel {
             e.printStackTrace();
             JOptionPane.showMessageDialog(this, e.getMessage());
         }
+    }
+    
+    private void initTable() {
+        String columns[] = {"Item Code", "Qty", "Discount"};
+        DefaultTableModel dtm = new DefaultTableModel(columns, 0) {
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
+        tblItem.setModel(dtm);
+    }
+
+    private void addDataToTable() {
+        OrderDetailDto orderDetailDto = new OrderDetailDto();
+        orderDetailDto.setDiscount(Double.parseDouble(txtDiscount.getText()));
+        orderDetailDto.setQty(Integer.parseInt(txtQty.getText()));
+        orderDetailDto.setItemCode(txtItemId.getText());
+        
+        orderDetailDtos.add(orderDetailDto);
+        DefaultTableModel dtm = (DefaultTableModel)tblItem.getModel();
+        Object [] rowData = {orderDetailDto.getItemCode(), orderDetailDto.getQty(), orderDetailDto.getDiscount()};
+        dtm.addRow(rowData);
+        clearItemData();
+    }
+    
+    private void clearItemData(){
+        txtItemId.setText("");
+        txtDiscount.setText("");
+        txtQty.setText("");
+        lblItemData.setText("");
     }
 }
