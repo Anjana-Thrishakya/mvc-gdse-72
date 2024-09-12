@@ -5,6 +5,7 @@
 package edu.ijse.mvc.controller;
 
 import edu.ijse.mvc.dto.OrderDto;
+import edu.ijse.mvc.model.OrderModel;
 
 /**
  *
@@ -12,9 +13,11 @@ import edu.ijse.mvc.dto.OrderDto;
  */
 public class OrderController {
     
+    private OrderModel orderModel = new OrderModel();
+    
     public String placeOrder(OrderDto orderDto) throws Exception{
-        System.out.println(orderDto);
-        return null;
+        String resp = orderModel.placeOrder(orderDto);
+        return resp;
     }
     
 }
