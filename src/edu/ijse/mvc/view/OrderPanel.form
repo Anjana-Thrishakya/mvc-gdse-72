@@ -89,12 +89,14 @@
                   <Component id="lblItemData" alignment="3" max="32767" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="lblQty" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="txtQty" alignment="3" min="-2" pref="34" max="-2" attributes="0"/>
-                  <Component id="lblDIscount" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="txtDiscount" alignment="3" min="-2" pref="34" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
                   <Component id="btnAdd" alignment="1" max="32767" attributes="0"/>
+                  <Group type="103" groupAlignment="3" attributes="0">
+                      <Component id="lblQty" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="txtQty" alignment="3" min="-2" pref="34" max="-2" attributes="0"/>
+                      <Component id="lblDIscount" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="txtDiscount" alignment="3" min="-2" pref="34" max="-2" attributes="0"/>
+                  </Group>
               </Group>
               <EmptySpace type="unrelated" max="-2" attributes="0"/>
               <Component id="jScrollPane1" min="-2" pref="335" max="-2" attributes="0"/>

@@ -5,7 +5,9 @@
 package edu.ijse.mvc.view;
 
 import edu.ijse.mvc.controller.CustomerController;
+import edu.ijse.mvc.controller.ItemController;
 import edu.ijse.mvc.dto.CustomerDto;
+import edu.ijse.mvc.dto.ItemDto;
 import javax.swing.JOptionPane;
 
 /**
@@ -15,7 +17,7 @@ import javax.swing.JOptionPane;
 public class OrderPanel extends javax.swing.JPanel {
     
     private CustomerController customerController = new CustomerController();
-
+    private ItemController itemController = new ItemController();
     /**
      * Creates new form OrderPanel
      */
@@ -181,12 +183,13 @@ public class OrderPanel extends javax.swing.JPanel {
                     .addComponent(btnSearchItem, javax.swing.GroupLayout.DEFAULT_SIZE, 31, Short.MAX_VALUE)
                     .addComponent(lblItemData, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblQty)
-                    .addComponent(txtQty, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblDIscount)
-                    .addComponent(txtDiscount, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnAdd, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnAdd, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(lblQty)
+                        .addComponent(txtQty, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(lblDIscount)
+                        .addComponent(txtDiscount, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 335, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -200,7 +203,7 @@ public class OrderPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_btnSearchActionPerformed
 
     private void btnSearchItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchItemActionPerformed
-        // TODO add your handling code here:
+        searchItem();
     }//GEN-LAST:event_btnSearchItemActionPerformed
 
 
@@ -237,6 +240,21 @@ public class OrderPanel extends javax.swing.JPanel {
         } catch (Exception e) {
                 e.printStackTrace();
                 JOptionPane.showMessageDialog(this, e.getMessage());
+        }
+    }
+    
+    private void searchItem(){
+        String itemCode = txtItemId.getText();
+        try {
+            ItemDto itemDto = itemController.searchItem(itemCode);
+            if(itemDto != null){
+                lblItemData.setText(itemDto.getDescription() + " | " + itemDto.getPack() + " | " + itemDto.getUnitPrice() + " | " + itemDto.getQoh());
+            } else {
+                JOptionPane.showMessageDialog(this, "Item Not Found");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, e.getMessage());
         }
     }
 }

@@ -18,30 +18,51 @@ import java.sql.SQLException;
  * @author anjan
  */
 public class ItemModel {
-    
-    public ArrayList<ItemDto> getAll() throws SQLException, ClassNotFoundException{
+
+    public ArrayList<ItemDto> getAll() throws SQLException, ClassNotFoundException {
         Connection connection = DBConnection.getInstance().getConnection();
         String sql = "SELECT * FROM Item";
         PreparedStatement statement = connection.prepareStatement(sql);
-        
+
         ResultSet rst = statement.executeQuery();
-        
+
         ArrayList<ItemDto> itemDtos = new ArrayList<>();
-        while (rst.next()) {            
+        while (rst.next()) {
             ItemDto dto = new ItemDto();
             dto.setCode(rst.getString("ItemCode"));
             dto.setDescription(rst.getString("Description"));
             dto.setPack(rst.getString("PackSize"));
             dto.setQoh(rst.getInt("QtyOnHand"));
             dto.setUnitPrice(rst.getDouble("UnitPrice"));
-            
+
             itemDtos.add(dto);
         }
-        
+
         return itemDtos;
     }
-    
-    public String saveItem(ItemDto dto) throws SQLException, ClassNotFoundException{
+
+    public ItemDto saerchItem(String itemCode) throws SQLException, ClassNotFoundException {
+        Connection connection = DBConnection.getInstance().getConnection();
+        String sql = "SELECT * FROM Item WHERE ItemCode = ?";
+        PreparedStatement statement = connection.prepareStatement(sql);
+        statement.setString(1, itemCode);
+        ResultSet rst = statement.executeQuery();
+
+        if (rst.next()) {
+            ItemDto dto = new ItemDto();
+            dto.setCode(rst.getString("ItemCode"));
+            dto.setDescription(rst.getString("Description"));
+            dto.setPack(rst.getString("PackSize"));
+            dto.setQoh(rst.getInt("QtyOnHand"));
+            dto.setUnitPrice(rst.getDouble("UnitPrice"));
+
+            return dto;
+        }
+
+        return null;
+    }
+
+    public String saveItem(ItemDto dto) throws SQLException, ClassNotFoundException {
         Connection connection = DBConnection.getInstance().getConnection();
         String sql = "INSERT INTO item VALUES (?,?,?,?,?)";
         PreparedStatement statement = connection.prepareStatement(sql);
@@ -50,9 +71,9 @@ public class ItemModel {
         statement.setString(3, dto.getPack());
         statement.setDouble(4, dto.getUnitPrice());
         statement.setInt(5, dto.getQoh());
-        
+
         int result = statement.executeUpdate();
         return result > 0 ? "Successful" : "Fail";
     }
-    
+
 }

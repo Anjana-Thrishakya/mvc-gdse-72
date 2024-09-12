@@ -30,4 +30,8 @@ public class ItemController {
         String resp = ITEM_MODEL.saveItem(itemDto);
         return resp;
     }
+    
+    public ItemDto searchItem(String itemCode) throws SQLException, ClassNotFoundException{
+        return ITEM_MODEL.saerchItem(itemCode);
+    }
 }
