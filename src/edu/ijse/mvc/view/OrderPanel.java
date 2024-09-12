@@ -6,10 +6,14 @@ package edu.ijse.mvc.view;
 
 import edu.ijse.mvc.controller.CustomerController;
 import edu.ijse.mvc.controller.ItemController;
+import edu.ijse.mvc.controller.OrderController;
 import edu.ijse.mvc.dto.CustomerDto;
 import edu.ijse.mvc.dto.ItemDto;
 import edu.ijse.mvc.dto.OrderDetailDto;
+import edu.ijse.mvc.dto.OrderDto;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -19,6 +23,7 @@ import javax.swing.table.DefaultTableModel;
  */
 public class OrderPanel extends javax.swing.JPanel {
     
+    private OrderController orderController = new OrderController();
     private CustomerController customerController = new CustomerController();
     private ItemController itemController = new ItemController();
     private ArrayList<OrderDetailDto> orderDetailDtos = new ArrayList<>();
@@ -126,6 +131,11 @@ public class OrderPanel extends javax.swing.JPanel {
 
         btnPlaceOrder.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         btnPlaceOrder.setText("Place Order");
+        btnPlaceOrder.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPlaceOrderActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -220,6 +230,10 @@ public class OrderPanel extends javax.swing.JPanel {
         addDataToTable();
     }//GEN-LAST:event_btnAddActionPerformed
 
+    private void btnPlaceOrderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPlaceOrderActionPerformed
+        palceOrder();
+    }//GEN-LAST:event_btnPlaceOrderActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAdd;
@@ -300,5 +314,23 @@ public class OrderPanel extends javax.swing.JPanel {
         txtDiscount.setText("");
         txtQty.setText("");
         lblItemData.setText("");
+    }
+    
+    private void palceOrder(){
+        OrderDto orderDto = new OrderDto();
+        orderDto.setCustId(txtCustomer.getText());
+        orderDto.setOrderId(txtOrderId.getText());
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        String date = sdf.format(new Date());
+        orderDto.setOrderDate(date);
+        orderDto.setOrderDetailDtos(orderDetailDtos);
+        
+        try {
+            String resp = orderController.placeOrder(orderDto);
+            JOptionPane.showMessageDialog(this, resp);
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showConfirmDialog(this, e.getMessage());
+        }
     }
 }
